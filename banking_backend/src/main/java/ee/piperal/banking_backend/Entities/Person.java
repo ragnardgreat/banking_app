@@ -24,4 +24,5 @@ public class Person {
     private String lastName;
     private String username;
     private String balance;
+    private boolean logged;
 }

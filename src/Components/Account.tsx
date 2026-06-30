@@ -15,7 +15,7 @@ function Account() {
     return (<>
         Username: {data ? data.username : "No Data"}<br />
         Email: {data ? data.email : "No Data"}<br />
-        Balance: {data ? data.balance : "No Data"}
+        Balance: {data ? " $" + data.balance  : "No Data"}
     </>
     )
 }

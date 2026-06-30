@@ -13,19 +13,24 @@ function Register() {
         username: username,
         password: password,
         firstName: fName,
-        lastName: lName
+        lastName: lName,
+        logged:false
     }
 
     function registerUser() {
-        console.log(JSON.stringify(payload))
-        fetch(`http://localhost:5000/newuser`, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            method: "POST",
-            body: JSON.stringify(payload)
-        }).catch(err => console.log(err))
+        if (email == null || password == null || username == null || fName == null || lName == null) {
+            alert("Missing fields")
+        }
+        else {
+            fetch(`http://localhost:5000/newuser`, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                method: "POST",
+                body: JSON.stringify(payload)
+            }).then(res => console.log(res))
+        }
     }
 
 
