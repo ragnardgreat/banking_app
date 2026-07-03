@@ -5,17 +5,35 @@ import Home from './Components/Home'
 import Account from './Components/Account'
 import Login from './Components/Login'
 import Register from './Components/Register'
+import UserSearch from './Components/UserSearch'
 
 function App() {
+    const currentId = localStorage.getItem("id")
+    window.addEventListener("storage", () => {
+        if (localStorage.getItem("id") == null) {
+            return
+        }
+        else {
+            localStorage.clear()
+            fetch(`http://localhost:5000/logout/${currentId}`, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                method: "POST"
+            }).then(() => { window.location.href = "/" }).catch(err => console.log(err))
+        }
+    })
     return (<>
         <BrowserRouter>
             <Header />
 
             <Routes>
-                <Route path='/' element={<Home />}></Route>
-                <Route path='/account/:id' element={<Account />}></Route>
-                <Route path='/login' element={<Login />}></Route>
-                <Route path='/register' element={<Register />}></Route>
+                <Route path='/' element={<Home />}/>
+                <Route path='/account' element={<Account />}/>
+                <Route path='/login' element={<Login />}/>
+                <Route path='/register' element={<Register />}/>
+                <Route path='/search' element={<UserSearch/>}/>
             </Routes>
         </BrowserRouter>
     </>

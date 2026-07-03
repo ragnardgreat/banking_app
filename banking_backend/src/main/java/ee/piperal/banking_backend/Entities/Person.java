@@ -25,4 +25,5 @@ public class Person {
     private String username;
     private String balance;
     private boolean logged;
+    private String token;
 }

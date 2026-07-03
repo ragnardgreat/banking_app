@@ -1,11 +1,10 @@
 import React from 'react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 function Login() {
 
-  const [username, setUsername] = useState()
-  const [password, setPassword] = useState()
-  const [userData, setUserData] = useState()
+  const [username, setUsername] = useState<string>()
+  const [password, setPassword] = useState<string>()
 
   const payload = {
     password: password
@@ -21,8 +20,12 @@ function Login() {
       body: JSON.stringify(payload)
     }).then(res => res.json())
       .then(json => {
-        setUserData(json);
+        if(json.status){
+          alert("Password or username is incorrect")
+          return
+        }
         localStorage.setItem("id", json.id)
+        localStorage.setItem("token", json.token)
         window.location.href = "/"
       })
       .catch(err => { console.log(err) })
