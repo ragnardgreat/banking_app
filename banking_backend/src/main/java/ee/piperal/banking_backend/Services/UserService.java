@@ -3,13 +3,17 @@ package ee.piperal.banking_backend.Services;
 import ee.piperal.banking_backend.Entities.Person;
 import ee.piperal.banking_backend.Functions.TokenGenerator;
 import ee.piperal.banking_backend.Repositories.UserRepository;
+import ee.piperal.banking_backend.dto.AccountDto;
+import ee.piperal.banking_backend.dto.LoginDto;
 import ee.piperal.banking_backend.dto.SearchDto;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -27,34 +31,43 @@ public class UserService {
     }
 
     //Mainly for user personal account
-    public Person GetUser(Long id ) {
+    public AccountDto GetUser(Long id ) {
         Person person = userRepository.findById(id).orElseThrow();
+        AccountDto accountDto = new AccountDto();
         personValidator(person);
-        return person;
+        accountDto.setId(person.getId());
+        accountDto.setUsername(person.getUsername());
+        accountDto.setEmail(person.getEmail());
+        accountDto.setBalance(person.getBalance());
+        return accountDto;
     }
     //Used for user search
-    public SearchDto checkUser(String username){
-        if(userRepository.findByUsername(username).isPresent()){
-            Person person = userRepository.findByUsername(username).get();
-            personValidator(person);
-            SearchDto searchDto = new SearchDto();
-            searchDto.setUsername(person.getUsername());
-            searchDto.setId(person.getId());
-            return searchDto;
+    public List<SearchDto> searchUser(String username){
+        List<Person> people = userRepository.userSearch(username);
+        List<SearchDto> searchDtos = new ArrayList<>();
+        for(Person person : people){
+            searchDtos.add(new SearchDto());
+            searchDtos.getLast().setUsername(person.getUsername());
+            searchDtos.getLast().setId(person.getId());
         }
-        return new SearchDto();
+        System.out.println(searchDtos);
+        return searchDtos;
     }
 
-    public Person userLogin(String username, String password) {
+    public LoginDto userLogin(String username, String password) {
         Person person = userRepository.findByUsername(username).orElseThrow();
         TokenGenerator tokenGenerator = new TokenGenerator();
         personValidator(person);
         if (person.getPassword().equals(password)) {
+            LoginDto loginDto = new LoginDto();
             person.setLogged(true);
             userRepository.save(person);
-            person.setToken(tokenGenerator.token());
+            String newToken = tokenGenerator.token();
+            person.setToken(newToken);
             userRepository.save(person);
-            return person;
+            loginDto.setId(person.getId());
+            loginDto.setToken(newToken);
+            return loginDto;
         }
         else{
             throw new RuntimeException("Wrong password");

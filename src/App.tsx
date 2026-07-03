@@ -6,6 +6,7 @@ import Account from './Components/Account'
 import Login from './Components/Login'
 import Register from './Components/Register'
 import UserSearch from './Components/UserSearch'
+import SearchAccount from './Components/SearchAccount'
 
 function App() {
     const currentId = localStorage.getItem("id")
@@ -34,6 +35,7 @@ function App() {
                 <Route path='/login' element={<Login />}/>
                 <Route path='/register' element={<Register />}/>
                 <Route path='/search' element={<UserSearch/>}/>
+                <Route path='/search/:id' element={<SearchAccount/>}/>
             </Routes>
         </BrowserRouter>
     </>

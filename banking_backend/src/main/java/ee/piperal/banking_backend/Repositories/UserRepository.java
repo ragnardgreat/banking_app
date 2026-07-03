@@ -6,8 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 
 
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -15,7 +17,11 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<Person,Long> {
     Optional<Person> findByUsername(String username);
 
+
     Optional<Person> findUsernameByUsername(String username);
+
+    @Query("SELECT p FROM Person p WHERE LOWER(p.username) LIKE LOWER(CONCAT('%', :username, '%'))")
+    List<Person> userSearch(@Param("username") String username);
 
     Optional<Person> findByEmail(String email);
 }

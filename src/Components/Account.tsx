@@ -30,7 +30,7 @@ function Account() {
             .then(() => {
                 if (status) {
                     if (localStorage.getItem("id") != null) {
-                        fetch(`http://localhost:5000/users/${localStorage.getItem("id")}`)
+                        fetch(`http://localhost:5000/account/${localStorage.getItem("id")}`)
                             .then(res => res.json())
                             .then(json => setData(json))
                     }
