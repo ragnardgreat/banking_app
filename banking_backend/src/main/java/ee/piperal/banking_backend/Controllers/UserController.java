@@ -19,11 +19,15 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
     //Mainly meant for personal user account
     @GetMapping("account/{id}")
     public AccountDto getUser(@PathVariable Long id){
         return userService.GetUser(id);
+    }
+
+    @GetMapping("search/found/{id}")
+    public SearchDto searchAccount(@PathVariable Long id){
+        return userService.SearchAccount(id);
     }
 
     //Meant for user search

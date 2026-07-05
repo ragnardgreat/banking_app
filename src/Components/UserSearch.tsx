@@ -5,7 +5,6 @@ function UserSearch() {
 
     const [username, setUsername] = useState<string>()
     const [data, setData] = useState()
-    let navigate = useNavigate
 
 
     function userSearch() {

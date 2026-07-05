@@ -13,8 +13,7 @@ function Register() {
         username: username,
         password: password,
         firstName: fName,
-        lastName: lName,
-        logged:false
+        lastName: lName
     }
 
     function registerUser() {
@@ -29,9 +28,10 @@ function Register() {
                 },
                 method: "POST",
                 body: JSON.stringify(payload)
-            }).then(res => console.log(res))
+            }).then(res => res.json()).then(json => console.log(json))
         }
     }
+
 
 
     return (<>

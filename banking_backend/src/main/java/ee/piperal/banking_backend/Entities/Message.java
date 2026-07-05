@@ -14,17 +14,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Person {
+public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String email;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private String username;
-    private Double balance;
-    private int transfer_limit;
-    private boolean logged = false;
-    private String token;
+    private Long sender;
+    private Long receiver;
+    private String message;
+    private double amount;
+    private boolean confirmed;
 }

@@ -5,13 +5,14 @@ import ee.piperal.banking_backend.Functions.TokenGenerator;
 import ee.piperal.banking_backend.Repositories.UserRepository;
 import ee.piperal.banking_backend.dto.AccountDto;
 import ee.piperal.banking_backend.dto.LoginDto;
+import ee.piperal.banking_backend.dto.RegisterDto;
 import ee.piperal.banking_backend.dto.SearchDto;
-import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.server.ResponseStatusException;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class UserService {
 
     public void personValidator(Person person){
         if(person.getId() == null){
-            throw new RuntimeException("Person does not exist");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Person id is null");
         }
 
     }
@@ -41,6 +42,16 @@ public class UserService {
         accountDto.setBalance(person.getBalance());
         return accountDto;
     }
+
+    public SearchDto SearchAccount(Long id){
+        Person person = userRepository.findById(id).orElseThrow();
+        SearchDto searchDto = new SearchDto();
+        personValidator(person);
+        searchDto.setId(person.getId());
+        searchDto.setUsername(person.getUsername());
+        return searchDto;
+    }
+
     //Used for user search
     public List<SearchDto> searchUser(String username){
         List<Person> people = userRepository.userSearch(username);
@@ -50,7 +61,6 @@ public class UserService {
             searchDtos.getLast().setUsername(person.getUsername());
             searchDtos.getLast().setId(person.getId());
         }
-        System.out.println(searchDtos);
         return searchDtos;
     }
 
@@ -70,7 +80,7 @@ public class UserService {
             return loginDto;
         }
         else{
-            throw new RuntimeException("Wrong password");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect username or password");
         }
     }
 
@@ -87,10 +97,12 @@ public class UserService {
 
     public void CreateUser(Person person) {
         if(userRepository.findUsernameByUsername(person.getUsername()).isPresent()){
-            throw new RuntimeException("Username already exists");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username is already taken");
         }
         else{
-            person.setBalance("0.0");
+            person.setBalance(0.0);
+            person.setLogged(false);
+            person.setTransfer_limit(100);
             person.setToken("0");
             userRepository.save(person);
         }
