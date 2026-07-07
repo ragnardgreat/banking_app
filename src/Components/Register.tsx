@@ -28,7 +28,7 @@ function Register() {
                 },
                 method: "POST",
                 body: JSON.stringify(payload)
-            }).then(res => res.json()).then(json => console.log(json))
+            }).then(()=>{window.location.href = "/account"})
         }
     }
 

@@ -24,16 +24,28 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public void personValidator(Person person){
-        if(person.getId() == null){
+    //Checks db for id
+    public void personValidator(Person person) {
+        if (person.getId() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Person id is null");
         }
+    }
 
+    //Compates tokens
+    public void tokenValidator(Long id, String token) {
+        String dbToken = userRepository.findById(id).orElseThrow().getToken();
+        if (token == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Token is null");
+        }
+        if (!dbToken.equals(token)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Unauthorized token");
+        }
     }
 
     //Mainly for user personal account
-    public AccountDto GetUser(Long id ) {
+    public AccountDto GetUser(Long id, String token) {
         Person person = userRepository.findById(id).orElseThrow();
+        tokenValidator(id, token);
         AccountDto accountDto = new AccountDto();
         personValidator(person);
         accountDto.setId(person.getId());
@@ -43,7 +55,7 @@ public class UserService {
         return accountDto;
     }
 
-    public SearchDto SearchAccount(Long id){
+    public SearchDto SearchAccount(Long id) {
         Person person = userRepository.findById(id).orElseThrow();
         SearchDto searchDto = new SearchDto();
         personValidator(person);
@@ -53,10 +65,10 @@ public class UserService {
     }
 
     //Used for user search
-    public List<SearchDto> searchUser(String username){
+    public List<SearchDto> searchUser(String username) {
         List<Person> people = userRepository.userSearch(username);
         List<SearchDto> searchDtos = new ArrayList<>();
-        for(Person person : people){
+        for (Person person : people) {
             searchDtos.add(new SearchDto());
             searchDtos.getLast().setUsername(person.getUsername());
             searchDtos.getLast().setId(person.getId());
@@ -65,41 +77,45 @@ public class UserService {
     }
 
     public LoginDto userLogin(String username, String password) {
-        Person person = userRepository.findByUsername(username).orElseThrow();
+        Person person = userRepository.findByUsername(username)
+                .orElseThrow(() ->
+                        new ResponseStatusException(
+                                HttpStatus.UNAUTHORIZED,
+                                "Incorrect username or password"
+                        ));
         TokenGenerator tokenGenerator = new TokenGenerator();
         personValidator(person);
         if (person.getPassword().equals(password)) {
             LoginDto loginDto = new LoginDto();
             person.setLogged(true);
-            userRepository.save(person);
             String newToken = tokenGenerator.token();
             person.setToken(newToken);
             userRepository.save(person);
             loginDto.setId(person.getId());
             loginDto.setToken(newToken);
             return loginDto;
-        }
-        else{
+        } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect username or password");
         }
     }
 
-    public void userLogout(Long id) {
+    public void userLogout(Long id, String token) {
         Person person = userRepository.findById(id).orElseThrow();
+        tokenValidator(id, token);
         person.setLogged(false);
+        person.setToken(null);
         userRepository.save(person);
     }
 
-    public boolean statusCheck(Long id){
+    public boolean statusCheck(Long id) {
         Person person = userRepository.findById(id).orElseThrow();
         return person.isLogged();
     }
 
     public void CreateUser(Person person) {
-        if(userRepository.findUsernameByUsername(person.getUsername()).isPresent()){
+        if (userRepository.findUsernameByUsername(person.getUsername()).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Username is already taken");
-        }
-        else{
+        } else {
             person.setBalance(0.0);
             person.setLogged(false);
             person.setTransfer_limit(100);

@@ -21,8 +21,8 @@ public class UserController {
 
     //Mainly meant for personal user account
     @GetMapping("account/{id}")
-    public AccountDto getUser(@PathVariable Long id){
-        return userService.GetUser(id);
+    public AccountDto getUser(@PathVariable Long id, String token){
+        return userService.GetUser(id, token);
     }
 
     @GetMapping("search/found/{id}")
@@ -45,8 +45,8 @@ public class UserController {
 
     //User logout
     @PostMapping("logout/{id}")
-    public void logout(@PathVariable Long  id){
-        userService.userLogout(id);
+    public void logout(@PathVariable Long  id, String token){
+        userService.userLogout(id, token);
     }
 
     //Check user logged status

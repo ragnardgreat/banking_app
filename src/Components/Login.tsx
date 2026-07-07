@@ -1,4 +1,3 @@
-import React from 'react'
 import { useState } from 'react'
 
 function Login() {
@@ -10,6 +9,7 @@ function Login() {
     password: password
   }
 
+
   function login() {
     fetch(`http://localhost:5000/login/${username}`, {
       headers: {
@@ -20,13 +20,13 @@ function Login() {
       body: JSON.stringify(payload)
     }).then(res => res.json())
       .then(json => {
-        if(json.status){
+        if (json.status) {
           alert("Password or username is incorrect")
           return
         }
         localStorage.setItem("id", json.id)
         localStorage.setItem("token", json.token)
-        window.location.href = "/"
+        window.location.href = "/account"
       })
       .catch(err => { console.log(err) })
   }

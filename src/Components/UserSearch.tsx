@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { useNavigate, Link } from 'react-router'
+import { Link } from 'react-router'
+import type { SearchResult } from '../Models/SearchResult'
 
 function UserSearch() {
 
     const [username, setUsername] = useState<string>()
-    const [data, setData] = useState()
+    const [data, setData] = useState<SearchResult[]>()
 
 
     function userSearch() {
@@ -32,12 +33,19 @@ function UserSearch() {
 
 
     return (<>
-        <label htmlFor="searchBar">Search for users to send money to:</label><br />
-        <input onChange={(e) => { setUsername(e.target.value) }} type='string' id='searchBar' name='searchBar'></input>
-        <button onClick={() => { userSearch() }}>Search</button>
-        <div id='resultsContainer'>
-            {showUsers()}
-        </div>
+        {localStorage.getItem("id") ?
+            <>
+                <label htmlFor="searchBar">Search for users to send/request money:</label><br />
+                <input onChange={(e) => { setUsername(e.target.value) }} type='string' id='searchBar' name='searchBar'></input>
+                <button onClick={() => { userSearch() }}>Search</button>
+                <div id='resultsContainer'>
+                    {showUsers()}
+                </div>
+            </> :
+            <div id='pleaseLoginContainer'>
+                <h1>Please Login to use Search</h1>
+                <Link to="/login">Login</Link>
+            </div>}
     </>
     )
 }

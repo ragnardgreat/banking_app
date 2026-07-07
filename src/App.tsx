@@ -7,6 +7,7 @@ import Login from './Components/Login'
 import Register from './Components/Register'
 import UserSearch from './Components/UserSearch'
 import SearchAccount from './Components/SearchAccount'
+import Messages from './Components/Messages'
 
 function App() {
     const currentId = localStorage.getItem("id")
@@ -30,12 +31,13 @@ function App() {
             <Header />
 
             <Routes>
-                <Route path='/' element={<Home />}/>
-                <Route path='/account' element={<Account />}/>
-                <Route path='/login' element={<Login />}/>
-                <Route path='/register' element={<Register />}/>
-                <Route path='/search' element={<UserSearch/>}/>
-                <Route path='/search/:id' element={<SearchAccount/>}/>
+                <Route path='/' element={<Home />} />
+                <Route path='/account' element={<Account />} />
+                <Route path='/login' element={<Login />} />
+                <Route path='/register' element={<Register />} />
+                <Route path='/search' element={<UserSearch />} />
+                <Route path='/search/:id' element={<SearchAccount />} />
+                <Route path='/messages' element={<Messages/>}/>
             </Routes>
         </BrowserRouter>
     </>
