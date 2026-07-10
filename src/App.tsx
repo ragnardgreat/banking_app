@@ -8,6 +8,7 @@ import Register from './Components/Register'
 import UserSearch from './Components/UserSearch'
 import SearchAccount from './Components/SearchAccount'
 import Messages from './Components/Messages'
+import "./App.css"
 
 function App() {
     const currentId = localStorage.getItem("id")

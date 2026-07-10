@@ -31,7 +31,7 @@ public class UserService {
         }
     }
 
-    //Compates tokens
+    //Compares tokens
     public void tokenValidator(Long id, String token) {
         String dbToken = userRepository.findById(id).orElseThrow().getToken();
         if (token == null) {

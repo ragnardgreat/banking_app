@@ -1,0 +1,120 @@
+#homeContainer {
+    font-weight: normal;
+    margin: auto;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding-bottom: 30px;
+}
+
+
+#homeImgContainer {
+    position: relative;
+    width: 100%;
+    padding-bottom: 20px;
+}
+
+#homeImg {
+    width: 100%;
+    max-height: 300px;
+    position: relative;
+    left: 0;
+    top: 0;
+    filter: brightness(70%);
+}
+
+#homeImgTxt {
+    z-index: 100;
+    position: absolute;
+    color: white;
+    width: 100%;
+    padding: 30px;
+    font-size: 40px;
+    text-align: center;
+    top: 100px;
+    margin: auto;
+    backdrop-filter: blur(10px);
+    font-weight: lighter;
+    font-style: italic;
+}
+
+.homeContentContainer {
+    background-color: white;
+    color: black;
+    margin: auto;
+}
+
+#homeIntro {
+    color: white;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    margin: auto;
+}
+
+#homeFeaturesContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+#homeFeaturesContainer>* {
+    flex: 1;
+}
+
+.homeContentContainer {
+    padding: 20px;
+}
+
+h1 {
+    font-weight: normal;
+}
+
+
+#councelingContainer {
+    margin: auto;
+    justify-content: center;
+    width: fit-content;
+}
+
+.councelingTitle {
+    font-weight: bold;
+}
+
+.councelingItem {
+    position: relative;
+    display: flex;
+    gap: 200px;
+    margin-bottom: 30px;
+    background-color: rgba(0, 0, 0, 0.171);
+    padding: 20px;
+}
+
+.councelingTxt {
+    width: 100%;
+}
+
+.councelingImg {
+    width: 400px;
+    height: 300px;
+}
+
+#hirePro {
+    position: absolute;
+    bottom: 60px;
+    font-family: "Quicksand", sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 15px;
+    border: none;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.63);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: .1s linear;
+}
+
+#hirePro:hover {
+    bottom: 63px;
+}

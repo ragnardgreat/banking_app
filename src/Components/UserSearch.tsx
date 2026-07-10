@@ -18,7 +18,7 @@ function UserSearch() {
         if (data && data.length != 0) {
             return (
                 <>
-                    {data.map(user => <><div key={user.id} className='searchResult' ><p className='searchName'>{user.username}</p> <Link to={`/search/${user.id}`}><button className='accountBtn'>Account</button></Link></div></>)}
+                    {data.map(user => <><div key={user.id} className='searchResult' ><p className='searchName'>{user.username}</p> <Link to={`/search/${user.id}`}><button className='accountSearchBtn'>Account</button></Link></div></>)}
                 </>
             )
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { Person } from '../Models/Person'
-import { Link } from 'react-router'
+import "./Account.css"
 
 function Account() {
     const [data, setData] = useState<Person>()
@@ -8,12 +8,13 @@ function Account() {
     const [addAmount, setAddAmount] = useState<GLfloat | undefined>()
 
     useEffect(() => {
+        //Resets page when logging out and going back
         window.addEventListener('pageshow', (event) => {
             if (event.persisted || localStorage.getItem("id") == null) {
-                console.log('This page was restored from the bfcache.');
                 window.location.href = "/"
             }
         });
+
         if (localStorage.getItem("id") == null) {
             return
         }
@@ -82,18 +83,28 @@ function Account() {
 
     return (
         <>
-            {localStorage.getItem("id") ?
-                <>
-                    {data ? <button onClick={() => { userLogout(data.id) }}>Log out</button> : "No Data"}<br />
-                    Username: {data ? data.username : "No Data"}<br />
-                    Email: {data ? data.email : "No Data"}<br />
-                    Balance: {data ? " $" + data.balance : "No Data"}<br />
-                    <input id='addFunds' onChange={(e) => { setAddAmount(Number(e.target.value)) }}></input>
-                    <button onClick={() => { addFunds() }}>Add Funds</button>
-                </> : <div id='pleaseLoginContainer'>
-                    <h1>You are not logged in</h1>
-                    <Link to="/login">Login</Link>
-                </div>}
+            <div id='accountContainer'>
+                {localStorage.getItem("id") && data ?
+                    <>
+                        <div id='balance'>
+                            {/*For debugging and shocase purposes */}
+
+                            {/* <input id='addFunds' onChange={(e) => { setAddAmount(Number(e.target.value)) }}></input>
+                            <button onClick={() => { addFunds() }}>Add Funds</button><br />" */}
+                            {data ? data.username : "No Data"}<br />
+                            Balance: {data ? " $" + data.balance : "No Data"}<br />
+                            {data ? <button id='logOut' onClick={() => { userLogout(data.id) }}>Log out</button> : "No Data"}<br />
+                        </div>
+                    </> : null}
+            </div>
+            <div id='transactionHistory'>
+                <div className='transactionItem'>
+                    <h1 >from: Someone</h1>
+                    <h1>to: Someone</h1>
+                    <h1>Amount</h1>
+                </div>
+                
+            </div>
         </>
     )
 }
