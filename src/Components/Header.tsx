@@ -5,7 +5,7 @@ function Header() {
     return (<>
         <nav id='navBar'>
             <div id='logoContainer'>
-                <img src='hatlogo.webp' width={300}></img>
+                <img src='hatlogo.png' width={300}></img>
             </div>
             <div id='navLinks'>
                 <Link className='navItem' to="/">Home</Link>

@@ -1,0 +1,61 @@
+#accountContainer {
+    width: 60%;
+}
+
+#sendFundsContainer {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.089);
+    padding: 20px;
+}
+
+.fundInput {
+    border: none;
+    background-color: rgba(0, 0, 0, 0.301);
+    color: white;
+    font-family: "Quicksand", sans-serif;
+    margin: auto;
+}
+
+#requestFundsContainer {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.089);
+    padding: 20px;
+}
+
+#fundsContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 300px;
+    margin: auto;
+    justify-content: center;
+}
+
+#fundsContainer div {
+    font-size: 30px;
+}
+
+#fundsContainer input {
+    font-size: 30px;
+    width: 150px;
+}
+
+#requestMessage {
+    font-family: "Quicksand", sans-serif;
+    height: 60px;
+    font-size: 20px;
+    background-color: black;
+    color: white;
+}
+
+.requestButton {
+    font-family: "Quicksand", sans-serif;
+    font-size: 20px;
+    background-color: #50d95c;
+    padding: 10px;
+    border: none;
+    font-weight: bold;
+    margin: auto;
+    margin-bottom: 0;
+}

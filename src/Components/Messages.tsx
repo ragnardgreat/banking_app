@@ -103,7 +103,7 @@ function Messages() {
                             <div className='messageContainer'>
                                 <div key={message.id} className='messageContentContainer'>
                                     <div className="senderName">From: {message.senderName}</div><br/>
-                                    <div className='messageAmount'>Amount: {message.amount}$ </div><br/>
+                                    <div className='messageAmount'>Amount: ${message.amount} </div><br/>
                                     <div className="messageMessage">Message:<br/>{message.message}</div>
                                 </div>
                                 <div className='messageButtonsContainer'>
