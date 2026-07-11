@@ -4,4 +4,5 @@ export type Message = {
     receiverId: number;
     amount: number;
     message: string;
+    senderName:string;
 }

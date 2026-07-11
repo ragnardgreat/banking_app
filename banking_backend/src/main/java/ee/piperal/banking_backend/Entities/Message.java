@@ -21,6 +21,7 @@ public class Message {
     private Long sender;
     private Long receiver;
     private String message;
+    private String senderName;
     private double amount;
     private boolean confirmed;
 }

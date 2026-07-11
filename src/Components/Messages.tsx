@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import type { Message } from '../Models/Message'
+import './Messages.css'
 
 function Messages() {
 
@@ -19,6 +20,8 @@ function Messages() {
             .then(json => setData(json))
             .catch(err => console.error(err))
     }, [])
+
+    console.log(data)
 
     function statusCheck() {
         fetch(`http://localhost:5000/status/${localStorage.getItem("id")}`, {
@@ -97,9 +100,18 @@ function Messages() {
                 <>
                     {data.map(message =>
                         <>
-                            <div key={message.id} className='searchResult'>{message.amount}$ {message.message}</div>
-                            <button onClick={() => { sendMoney(message.id, message.senderId, message.receiverId, message.amount) }}>Send Money</button>
-                            <button onClick={() => { declineReqeust(message.id) }}>Decline request</button>
+                            <div className='messageContainer'>
+                                <div key={message.id} className='messageContentContainer'>
+                                    <div className="senderName">From: {message.senderName}</div><br/>
+                                    <div className='messageAmount'>Amount: {message.amount}$ </div><br/>
+                                    <div className="messageMessage">Message:<br/>{message.message}</div>
+                                </div>
+                                <div className='messageButtonsContainer'>
+                                    <button className='acceptMessage messageButton' onClick={() => { sendMoney(message.id, message.senderId, message.receiverId, message.amount) }}>Accept</button>
+                                    <button className='declineMessage messageButton' onClick={() => { declineReqeust(message.id) }}>Decline</button>
+                                </div>
+                            </div>
+
                         </>
                     )}
                 </>
@@ -115,7 +127,9 @@ function Messages() {
     }
 
     return (<>
-        {data ? showMessages() : null}
+        <div id='messageList'>
+            {data ? showMessages() : null}
+        </div>
     </>
     )
 }

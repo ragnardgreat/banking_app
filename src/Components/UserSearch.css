@@ -1,0 +1,91 @@
+#searchContainer {
+    width: 60%;
+    max-height: 400px;
+    margin: auto;
+    white-space: nowrap;
+    margin-top: 100px;
+}
+
+
+#searchBar {
+    padding: 10px;
+    font-size: 17px;
+    width: 80%;
+    background-color: #00000049;
+    color: white;
+    border: none;
+}
+
+#searchBar:focus {
+    background-color: #0000009a;
+    transform: .3s;
+}
+
+#searchBar:-webkit-autofill:focus {
+    background-color: red;
+}
+
+#searchButton {
+    width: 20%;
+    padding: 10px;
+    background: #000000;
+    color: white;
+    font-size: 17px;
+    border-left: none;
+    cursor: pointer;
+    font-family: "Quicksand", sans-serif;
+}
+
+
+
+.searchItem {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    font-size: 30px;
+    margin: 20px;
+}
+
+.searchResult {
+    display: grid;
+    width: 50%;
+    margin: auto;
+    margin-top: 20px;
+    grid-template-columns: auto auto auto;
+    background-color: rgba(0, 0, 0, 0.171);
+    transition: .3s;
+}
+
+.searchResult:hover {
+    transition: .3s;
+    background-color: rgba(0, 0, 0, 0.37);
+}
+
+.searchName {
+    grid-column: 2;
+    font-size: 30px;
+    font-weight: bold;
+
+}
+
+.accountSearchBtn {
+    position: relative;
+    grid-column: 3;
+    text-decoration: none;
+    color: white;
+    text-align: center;
+    margin: auto;
+    margin-right: 20px;
+    padding: 10px;
+    background-color: #50d95c;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .1s linear;
+    top: 0px;
+}
+
+.accountSearchBtn:hover {
+    transition: .1s linear;
+    top: -2px;
+}

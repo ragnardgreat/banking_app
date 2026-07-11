@@ -12,6 +12,7 @@ public class MessageDto {
     private Long id;
     private Long senderId;
     private Long receiverId;
+    private String senderName;
     private String message;
     private double amount;
 }

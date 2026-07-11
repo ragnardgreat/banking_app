@@ -4,6 +4,7 @@ import ee.piperal.banking_backend.Entities.Message;
 import ee.piperal.banking_backend.Repositories.MessageRepository;
 import ee.piperal.banking_backend.Repositories.UserRepository;
 import ee.piperal.banking_backend.dto.MessageDto;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -28,11 +29,13 @@ public class MessageService {
     private UserRepository userRepository;
 
     public void sendMessage(@RequestBody Message message) {
+        String name = userRepository.findById(message.getReceiver())
+                .orElseThrow(() -> new RuntimeException("User not found")).getUsername();
         message.setSender(message.getSender());
         message.setReceiver(message.getReceiver());
         message.setMessage(message.getMessage());
         message.setAmount(message.getAmount());
-        System.out.println(message.getMessage());
+        message.setSenderName(name);
         messageRepository.save(message);
     }
 
@@ -51,6 +54,7 @@ public class MessageService {
             messageDto.setReceiverId(message.getReceiver());
             messageDto.setMessage(message.getMessage());
             messageDto.setAmount(message.getAmount());
+            messageDto.setSenderName(message.getSenderName());
             messageDtoList.add(messageDto);
         }
         return messageDtoList;
