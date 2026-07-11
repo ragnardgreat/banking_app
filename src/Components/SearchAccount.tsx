@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import type { Person } from '../Models/Person'
+import './SearchAccount.css'
 
 function SearchAccount() {
     const id = useParams().id
     const [data, setData] = useState<Person>()
     const [funds, setFunds] = useState<GLfloat>()
+    const [sendFunds, setSendFunds] = useState<GLfloat>()
     const [message, setMessage] = useState<string>()
     const [status, setStatus] = useState<boolean>()
 
@@ -19,9 +21,11 @@ function SearchAccount() {
     const messagePayload = {
         sender: data?.id,
         receiver: parseInt(localStorage.getItem("id")!),
-        amount: funds,
+        amount: sendFunds,
         message: message
     }
+
+
 
     useEffect(() => {
         fetch(`http://localhost:5000/search/found/${id}`).then(res => res.json()).then(json => setData(json))
@@ -56,15 +60,29 @@ function SearchAccount() {
     }, [])
 
     function inputCheck() {
-        if (containsAnomaly(funds!.toString())) {
-            alert("Funds amount includes letters or symbols")
-            return false
+        if (funds) {
+            if (containsAnomaly(funds!.toString())) {
+                alert("Funds amount includes letters or symbols")
+                return false
+            }
+            if (funds! <= 0) {
+                alert("Can't send or recieve 0 or less")
+                return false
+            }
+            return true
         }
-        if (funds! <= 0) {
-            alert("Can't send or recieve 0 or less")
-            return false
+        if (sendFunds) {
+            if (containsAnomaly(sendFunds!.toString())) {
+                alert("Funds amount includes letters or symbols")
+                return false
+            }
+            if (sendFunds! <= 0) {
+                alert("Can't send or recieve 0 or less")
+                return false
+            }
+            return true
         }
-        return true
+
     }
 
     function containsAnomaly(str: string) {
@@ -110,13 +128,23 @@ function SearchAccount() {
     }
 
     return (<>
-        Username: {data ? data.username : "No Data"}<br />
-        <label>Funds:</label>
-        <input onChange={(e) => { setFunds(parseFloat(e.target.value)) }}></input><br />
-        <label>Message:</label>
-        <input onChange={(e) => { setMessage(e.target.value) }}></input><br />
-        <button onClick={() => { if (inputCheck()) { sendTransfer() } }}>Send funds</button>
-        <button onClick={() => { if (inputCheck()) { requestTransfer() } }}>Request Funds</button>
+        <div id="accountContainer">
+            <h1 id="balance">{data ? data.username : "No Data"}</h1>
+            <div id="fundsContainer">
+                <div id="sendFundsContainer">
+                    <label>Send Funds:</label>
+                    <p><input className='fundInput' onChange={(e) => { setFunds(parseFloat(e.target.value)) }}></input>$</p>
+                    <button className='requestButton' onClick={() => { if (inputCheck()) { sendTransfer() } }}>Send funds</button>
+                </div>
+                <div id="requestFundsContainer">
+                    <label>Reuest Funds:</label>
+                    <p><input className='fundInput' onChange={(e) => { setSendFunds(parseFloat(e.target.value)) }}></input>$</p>
+                    <label>Message:</label>
+                    <textarea id='requestMessage' onChange={(e) => { setMessage(e.target.value) }}></textarea><br />
+                    <button className='requestButton' onClick={() => { if (inputCheck()) { requestTransfer() } }}>Request Funds</button>
+                </div>
+            </div>
+        </div>
     </>
     )
 }
