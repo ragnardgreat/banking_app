@@ -59,24 +59,16 @@ function SearchAccount() {
         statusCheck()
     }, [])
 
-    function inputCheck() {
-        if (funds) {
-            if (containsAnomaly(funds!.toString())) {
+    function inputCheck(value: GLfloat) {
+        if (value) {
+            if (value == 0 || value == null || value == undefined || isNaN(value)) {
+                return false
+            }
+            if (containsAnomaly(value!.toString())) {
                 alert("Funds amount includes letters or symbols")
                 return false
             }
-            if (funds! <= 0) {
-                alert("Can't send or recieve 0 or less")
-                return false
-            }
-            return true
-        }
-        if (sendFunds) {
-            if (containsAnomaly(sendFunds!.toString())) {
-                alert("Funds amount includes letters or symbols")
-                return false
-            }
-            if (sendFunds! <= 0) {
+            if (value! <= 0) {
                 alert("Can't send or recieve 0 or less")
                 return false
             }
@@ -103,6 +95,10 @@ function SearchAccount() {
                     alert('Funds sent sucesfully')
                     window.location.href = "/account"
                 }
+                else if(res.status == 400){
+                    alert("Not enough funds")
+                }
+
             }).catch(err => console.log(err))
         }
 
@@ -134,14 +130,14 @@ function SearchAccount() {
                 <div id="sendFundsContainer">
                     <label>Send Funds:</label>
                     <p><input className='fundInput' onChange={(e) => { setFunds(parseFloat(e.target.value)) }}></input>$</p>
-                    <button className='requestButton' onClick={() => { if (inputCheck()) { sendTransfer() } }}>Send funds</button>
+                    <button className='requestButton' onClick={() => { if (inputCheck(Number(funds))) { sendTransfer() } }}>Send funds</button>
                 </div>
                 <div id="requestFundsContainer">
-                    <label>Reuest Funds:</label>
+                    <label>Request Funds:</label>
                     <p><input className='fundInput' onChange={(e) => { setSendFunds(parseFloat(e.target.value)) }}></input>$</p>
                     <label>Message:</label>
                     <textarea id='requestMessage' onChange={(e) => { setMessage(e.target.value) }}></textarea><br />
-                    <button className='requestButton' onClick={() => { if (inputCheck()) { requestTransfer() } }}>Request Funds</button>
+                    <button className='requestButton' onClick={() => { if (inputCheck(Number(sendFunds))) { requestTransfer() } }}>Request Funds</button>
                 </div>
             </div>
         </div>
