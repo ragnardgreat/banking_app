@@ -75,7 +75,10 @@ function Messages() {
                         body: JSON.stringify(id)
                     })
                 }
-            }).then(() => { window.location.reload() }).catch(err => console.log(err))
+                else if (res.status == 400) {
+                    alert("Not Enough Funds")
+                }
+            }).catch(err => console.log(err))
         }
 
     }
@@ -89,7 +92,7 @@ function Messages() {
                 },
                 method: "POST",
                 body: JSON.stringify(id)
-            }).then(() => { window.location.reload() })
+            }).then(() => { alert("Request Declines"); window.location.reload() })
         }
 
     }
@@ -102,9 +105,9 @@ function Messages() {
                         <>
                             <div className='messageContainer'>
                                 <div key={message.id} className='messageContentContainer'>
-                                    <div className="senderName">From: {message.senderName}</div><br/>
-                                    <div className='messageAmount'>Amount: ${message.amount} </div><br/>
-                                    <div className="messageMessage">Message:<br/>{message.message}</div>
+                                    <div className="senderName">From: {message.senderName}</div><br />
+                                    <div className='messageAmount'>Amount: ${message.amount} </div><br />
+                                    <div className="messageMessage">Message:<br />{message.message}</div>
                                 </div>
                                 <div className='messageButtonsContainer'>
                                     <button className='acceptMessage messageButton' onClick={() => { sendMoney(message.id, message.senderId, message.receiverId, message.amount) }}>Accept</button>

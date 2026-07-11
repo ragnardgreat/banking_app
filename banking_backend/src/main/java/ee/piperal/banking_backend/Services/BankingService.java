@@ -42,13 +42,13 @@ public class BankingService {
         userService.personValidator(toPerson);
         userService.tokenValidator(from, fromPerson.getToken());
         if (amount <= 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can't transfer 0 or less than 0");
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Can't transfer 0 or less than 0");
         }
         if (fromPerson.getBalance() < amount) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not enough balance");
         }
         if (amount > fromPerson.getTransfer_limit()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can't transfer more than " + fromPerson.getTransfer_limit());
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Can't transfer more than " + fromPerson.getTransfer_limit());
         } else {
             transactionHistoryRepository.save(transaction);
             fromPerson.setBalance(fromPerson.getBalance() - amount);
