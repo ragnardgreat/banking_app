@@ -37,7 +37,7 @@
     border: none;
 }
 
-#noUsersMsg{
+#noUsersMsg {
     margin: 20px;
     font-size: 30px;
 }
@@ -61,10 +61,6 @@
     transition: .3s;
 }
 
-.searchResult:hover {
-    transition: .3s;
-    background-color: rgba(0, 0, 0, 0.37);
-}
 
 .searchName {
     grid-column: 2;
@@ -88,9 +84,11 @@
     cursor: pointer;
     transition: .1s linear;
     top: 0px;
+    border-radius: 20px;
 }
 
 .accountSearchBtn:hover {
+    background-color: #50d95bbe;
     transition: .1s linear;
     top: -2px;
 }

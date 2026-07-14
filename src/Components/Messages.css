@@ -52,18 +52,26 @@
 }
 
 .messageButton {
+    position: relative;
     padding: 10px;
     font-family: "Quicksand", sans-serif;
-    border-radius: 10px;
+    border-radius: 20px;
     font-weight: 1000;
     font-size: 20px;
     cursor: pointer;
+    bottom: 0px;
+    transition: .1s linear;
 }
 
 .messageContentContainer {
     grid-column: 1
 }
 
-#noUsersMsg{
+.messageButton:hover {
+    transition: .1s linear;
+    bottom: 2px;
+}
+
+#noUsersMsg {
     text-align: center;
 }

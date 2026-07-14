@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import type { Person } from '../Models/Person'
 import './SearchAccount.css'
@@ -6,29 +6,30 @@ import './SearchAccount.css'
 function SearchAccount() {
     const id = useParams().id
     const [data, setData] = useState<Person>()
-    const [funds, setFunds] = useState<GLfloat>()
-    const [sendFunds, setSendFunds] = useState<GLfloat>()
+    const [funds, setFunds] = useState<number>()
+    const [sendFunds, setSendFunds] = useState<number>()
     const [message, setMessage] = useState<string>()
     const [status, setStatus] = useState<boolean>()
 
 
-    const payload = {
-        from: parseInt(localStorage.getItem("id")!),
-        to: data?.id,
-        amount: funds
-    }
-
-    const messagePayload = {
-        sender: data?.id,
-        receiver: parseInt(localStorage.getItem("id")!),
-        amount: sendFunds,
-        message: message
-    }
-
 
 
     useEffect(() => {
-        fetch(`http://localhost:5000/search/found/${id}`).then(res => res.json()).then(json => setData(json))
+        if (localStorage.getItem("id") != null) {
+            fetch(`http://localhost:5000/search/found/${id}`).then(res => res.json()).then(json => {
+                if (json.message == "No value present") {
+                    alert("No such user exists")
+                    window.location.href = "/search"
+                }
+                else {
+                    setData(json)
+                }
+            }).catch(err => console.log(err))
+        }
+        else {
+            alert("Please Login")
+            window.location.href = "/"
+        }
     }, [id])
 
     //Check user login status
@@ -43,7 +44,7 @@ function SearchAccount() {
         })
             .then(res => res.json())
             .then(json => {
-                if (json.status) {
+                if (!json) {
                     alert('An error has occures')
                     localStorage.clear()
                     window.location.href = "/account"
@@ -59,52 +60,61 @@ function SearchAccount() {
         statusCheck()
     }, [])
 
-    function inputCheck(value: GLfloat) {
-        if (value) {
-            if (value == 0 || value == null || value == undefined || isNaN(value)) {
-                return false
-            }
-            if (containsAnomaly(value!.toString())) {
-                alert("Funds amount includes letters or symbols")
-                return false
-            }
-            if (value! <= 0) {
-                alert("Can't send or recieve 0 or less")
-                return false
-            }
-            return true
+    function inputCheck(value: number | undefined) {
+        if (!value || isNaN(value) || value <= 0) {
+            alert("Invalid amount")
+            return false
         }
-
+        return true
     }
 
-    function containsAnomaly(str: string) {
-        return /[a-z]/i.test(str);
-    }
 
     function sendTransfer() {
-        if (status) {
-            fetch("http://localhost:5000/transfer", {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                method: "POST",
-                body: JSON.stringify(payload)
-            }).then(res => {
-                if (res.status == 200) {
-                    alert('Funds sent sucesfully')
-                    window.location.href = "/account"
-                }
-                else if(res.status == 400){
-                    alert("Not enough funds")
-                }
-
-            }).catch(err => console.log(err))
+        if (!status || !data || !funds) {
+            alert("Please fill in all fields")
+            return
         }
+
+        const payload = {
+            from: parseInt(localStorage.getItem("id")!),
+            to: data!.id,
+            amount: funds!
+        }
+
+        fetch("http://localhost:5000/transfer", {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify(payload)
+        }).then(res => {
+            if (res.ok) {
+                alert('Funds sent sucesfully')
+                window.location.href = "/account"
+            }
+            else if (res.status == 400) {
+                alert("Not enough funds")
+            }
+
+        }).catch(err => console.log(err))
+
 
     }
 
     function requestTransfer() {
+        if (!status || !data || !sendFunds) {
+            alert("Please fill in all fields")
+            return
+        }
+
+        const messagePayload = {
+            sender: data?.id,
+            receiver: parseInt(localStorage.getItem("id")!),
+            amount: sendFunds,
+            message: message
+        }
+
         if (status) {
             fetch("http://localhost:5000/message/request", {
                 headers: {
@@ -114,7 +124,7 @@ function SearchAccount() {
                 method: "POST",
                 body: JSON.stringify(messagePayload)
             }).then(res => {
-                if (res.status == 200) {
+                if (res.ok) {
                     alert('Request Sent')
                     window.location.href = "/account"
                 }

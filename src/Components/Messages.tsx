@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { Message } from '../Models/Message'
 import './Messages.css'
 
@@ -20,8 +20,6 @@ function Messages() {
             .then(json => setData(json))
             .catch(err => console.error(err))
     }, [])
-
-    console.log(data)
 
     function statusCheck() {
         fetch(`http://localhost:5000/status/${localStorage.getItem("id")}`, {

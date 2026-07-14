@@ -26,10 +26,21 @@
 }
 
 #logOut {
+    position: relative;
     padding: 10px;
     border: none;
     font-family: "Quicksand", sans-serif;
     background-color: black;
     color: white;
     cursor: pointer;
+    border-radius: 20px;
+    transition: .1s linear;
+    bottom: 0px;
+    font-size: 20px;
+}
+
+#logOut:hover {
+    background-color: #9b1200;
+    transition: .1s linear;
+    bottom: 2px;
 }

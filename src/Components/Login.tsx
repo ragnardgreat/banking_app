@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import "./Login.css"
 
 function Login() {
 
@@ -32,11 +33,14 @@ function Login() {
   }
 
   return (<>
-    <label htmlFor='username'>Username:</label>
-    <input onChange={(e) => { setUsername(e.target.value) }} name='username' id='username'></input><br />
-    <label htmlFor='password'>Password:</label>
-    <input onChange={(e) => { setPassword(e.target.value) }} name='password' type='password' id='usernpasswordame'></input><br />
-    <button onClick={(() => { login() })}>Log in</button>
+    <div id='loginContainer'>
+      <h1 id="loginText">Login</h1>
+      <label htmlFor='username'>Username:</label>
+      <input autoComplete="off" onChange={(e) => { setUsername(e.target.value) }} name='username' id='username'></input><br />
+      <label htmlFor='password'>Password:</label>
+      <input autoComplete="off" onChange={(e) => { setPassword(e.target.value) }} name='password' type='password' id='usernpasswordame'></input><br />
+      <button id='loginButton' onClick={(() => { login() })}>Log in</button>
+    </div>
   </>
   )
 }
