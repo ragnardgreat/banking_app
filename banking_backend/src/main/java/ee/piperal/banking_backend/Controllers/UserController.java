@@ -5,7 +5,6 @@ import ee.piperal.banking_backend.Services.UserService;
 import ee.piperal.banking_backend.dto.AccountDto;
 import ee.piperal.banking_backend.dto.LoginDto;
 import ee.piperal.banking_backend.dto.SearchDto;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

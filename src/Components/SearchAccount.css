@@ -50,6 +50,7 @@
 }
 
 .requestButton {
+    position: relative;
     font-family: "Quicksand", sans-serif;
     font-size: 20px;
     background-color: #50d95c;
@@ -58,4 +59,13 @@
     font-weight: bold;
     margin: auto;
     margin-bottom: 0;
+    cursor: pointer;
+    top: 0px;
+    border-radius: 20px;
+}
+
+.requestButton:hover {
+    background-color: #50d95bbe;
+    transition: .1s linear;
+    top: -2px;
 }
