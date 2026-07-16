@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import type { Message } from '../Models/Message'
+import AlertBox from './AlertBox';
 import './Messages.css'
 
 function Messages() {
 
     const [data, setData] = useState<Message[]>()
     const [status, setStatus] = useState<boolean>()
-
+    const [alertMsg, setAlertMsg] = useState<{ title: string, content: string }>()
 
     useEffect(() => {
         fetch(`http://localhost:5000/messages/${localStorage.getItem("id")}`, {
@@ -63,7 +64,10 @@ function Messages() {
                 body: JSON.stringify(payload)
             }).then(res => {
                 if (res.status == 200) {
-                    alert('Funds sent sucesfully')
+                    setAlertMsg({
+                        title: "Transfer",
+                        content: "Funds sent successfully!"
+                    });
                     fetch("http://localhost:5000/message/confirm", {
                         headers: {
                             'Accept': 'application/json',
@@ -74,7 +78,10 @@ function Messages() {
                     })
                 }
                 else if (res.status == 400) {
-                    alert("Not Enough Funds")
+                    setAlertMsg({
+                        title: "No Enough Funds",
+                        content: "Not enough funds to send"
+                    });
                 }
             }).catch(err => console.log(err))
         }
@@ -90,7 +97,13 @@ function Messages() {
                 },
                 method: "POST",
                 body: JSON.stringify(id)
-            }).then(() => { alert("Request Declines"); window.location.reload() })
+            }).then(() => {
+                setAlertMsg({
+                    title: "Declined",
+                    content: "Message has been declined"
+                });
+            }
+            )
         }
 
     }
@@ -108,8 +121,8 @@ function Messages() {
                                     <div className="messageMessage">Message:<br />{message.message}</div>
                                 </div>
                                 <div className='messageButtonsContainer'>
-                                    <button className='acceptMessage messageButton' onClick={() => { sendMoney(message.id, message.senderId, message.receiverId, message.amount) }}>Accept</button>
-                                    <button className='declineMessage messageButton' onClick={() => { declineReqeust(message.id) }}>Decline</button>
+                                    <button className='acceptMessage messageButton' onClick={(e) => { sendMoney(message.id, message.senderId, message.receiverId, message.amount); e.currentTarget.disabled = true; }}>Accept</button>
+                                    <button className='declineMessage messageButton' onClick={(e) => { declineReqeust(message.id); e.currentTarget.disabled = true; }}>Decline</button>
                                 </div>
                             </div>
 
@@ -128,8 +141,9 @@ function Messages() {
     }
 
     return (<>
+        {alertMsg && <AlertBox title={alertMsg.title} content={alertMsg.content} active={true} />}
         <div id='messageList'>
-            {data ? showMessages() : null}
+            {data ? showMessages() : <h1 id="loadingText">Loading...</h1>}
         </div>
     </>
     )

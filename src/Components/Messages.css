@@ -27,7 +27,7 @@
 .messageButtonsContainer {
     grid-column: 3;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 20px;
     justify-content: right;
     margin: auto;

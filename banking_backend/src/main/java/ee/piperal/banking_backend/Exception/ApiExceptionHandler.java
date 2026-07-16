@@ -1,6 +1,7 @@
 package ee.piperal.banking_backend.Exception;
 
 
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,5 +17,12 @@ public class ApiExceptionHandler {
         errormessage.setStatus(HttpStatus.BAD_REQUEST.value());
         errormessage.setTimestamp(new Date());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errormessage);
+    }
+
+    @ExceptionHandler(RequestNotPermitted.class)
+    public ResponseEntity<String> handleRateLimit(RequestNotPermitted ex) {
+        return ResponseEntity
+                .status(HttpStatus.TOO_MANY_REQUESTS)
+                .body("Too many requests. Please try again later.");
     }
 }

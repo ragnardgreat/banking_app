@@ -11,7 +11,6 @@
 
 #homeImgContainer {
     position: relative;
-    width: 100%;
     border-bottom: 4px solid black;
 }
 
@@ -56,7 +55,7 @@
     margin: auto;
 }
 
-.homeParagraph{
+.homeParagraph {
     font-size: 20px;
 }
 
@@ -72,28 +71,31 @@
 
 .homeContentContainer {
     padding: 20px;
+    background-color: white;
+    transition: all 0.2s ease;
 }
 
-h1 {
-    font-weight: normal;
+.homeContentContainer:hover {
+    transform: translateY(-10px);
 }
 
 
 #councelingContainer {
-    margin: auto;
-    justify-content: center;
-    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
+
 
 .councelingTitle {
     font-weight: bold;
 }
 
 .councelingItem {
-    position: relative;
-    display: flex;
-    gap: 200px;
-    margin-bottom: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    align-items: center;
+    gap: 24px;
     background-color: rgba(0, 0, 0, 0.171);
     padding: 20px;
 }
@@ -103,13 +105,14 @@ h1 {
 }
 
 .councelingImg {
-    width: 400px;
-    height: 300px;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
 }
 
 #hirePro {
-    position: absolute;
-    bottom: 60px;
+    position: static;
+    margin-top: 12px;
     font-family: "Quicksand", sans-serif;
     font-weight: bold;
     font-size: 20px;
@@ -119,9 +122,10 @@ h1 {
     background-color: #50d95c;
     border-radius: 20px;
     cursor: pointer;
-    transition: .1s linear;
+    transition: transform 0.1s linear, box-shadow 0.1s linear;
 }
 
 #hirePro:hover {
-    bottom: 63px;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

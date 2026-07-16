@@ -7,6 +7,7 @@ import ee.piperal.banking_backend.dto.AccountDto;
 import ee.piperal.banking_backend.dto.LoginDto;
 import ee.piperal.banking_backend.dto.RegisterDto;
 import ee.piperal.banking_backend.dto.SearchDto;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,6 @@ public class UserService {
         accountDto.setBalance(person.getBalance());
         return accountDto;
     }
-
     public SearchDto SearchAccount(Long id) {
         Person person = userRepository.findById(id).orElseThrow();
         SearchDto searchDto = new SearchDto();
