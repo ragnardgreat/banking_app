@@ -23,6 +23,20 @@
     box-shadow: 0px 0px 60px 0px black;
     border-radius: 20px;
 }
-#alertBoxText h2{
+
+#alertBoxText h2 {
     font-weight: normal;
+}
+
+@media (max-width: 768px) {
+    #alertBox {
+        height: 100%;
+    }
+
+    #alertBoxText {
+        width: min(92vw, 420px);
+        padding: 24px;
+        top: 10%;
+        box-sizing: border-box;
+    }
 }

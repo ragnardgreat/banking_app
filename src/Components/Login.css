@@ -56,3 +56,17 @@
     background-color: #50d95bbe;
     color: white;
 }
+
+@media (max-width: 768px) {
+    #loginContainer {
+        width: min(60%, 420px);
+        margin-top: 32px;
+        padding: 20px;
+    }
+
+    #loginContainer input,
+    #loginButton {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}

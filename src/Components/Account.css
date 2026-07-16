@@ -44,3 +44,28 @@
     transition: .1s linear;
     bottom: 2px;
 }
+
+@media (max-width: 768px) {
+    #balance {
+        font-size: 2.2rem;
+    }
+
+    #accountContainer {
+        width: 100%;
+        padding: 0 12px;
+        box-sizing: border-box;
+    }
+
+    .transactionItem {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 18px;
+        margin-top: 20px;
+    }
+
+    #logOut {
+        width: 100%;
+        max-width: 240px;
+        margin: 0 auto;
+    }
+}

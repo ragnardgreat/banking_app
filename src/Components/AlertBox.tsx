@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react'
 import './AlertBox.css'
 
 type AlertBoxProps = {

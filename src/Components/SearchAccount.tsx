@@ -158,7 +158,7 @@ function SearchAccount() {
                 <div id="requestFundsContainer">
                     <label>Request Funds:</label>
                     <p><input className='fundInput' onChange={(e) => { setSendFunds(parseFloat(e.target.value)) }}></input>$</p>
-                    <label>Message:</label>
+                    <label>Message:</label><br/>
                     <textarea id='requestMessage' onChange={(e) => { setMessage(e.target.value) }}></textarea><br />
                     <button className='requestButton' onClick={() => {
                         if (inputCheck(Number(sendFunds))) {

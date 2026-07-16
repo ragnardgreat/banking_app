@@ -50,3 +50,17 @@
     text-align: center;
     font-weight: bold;
 }
+
+@media (max-width: 768px) {
+    #registerContainer {
+        width: min(60%, 420px);
+        margin-top: 32px;
+        padding: 20px;
+    }
+
+    #registerContainer input,
+    #registerContainer button {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}

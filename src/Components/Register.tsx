@@ -1,4 +1,3 @@
-import React from 'react'
 import { useState } from 'react'
 import './Register.css'
 import AlertBox from './AlertBox';

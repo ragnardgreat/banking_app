@@ -1,5 +1,8 @@
 #accountContainer {
-    width: 60%;
+    width: min(60rem, 100%);
+    margin: 0 auto;
+    padding: 0 16px;
+    box-sizing: border-box;
 }
 
 #sendFundsContainer {
@@ -8,6 +11,7 @@
     background-color: rgba(255, 255, 255, 0.089);
     padding: 20px;
     text-align: center;
+    border-radius: 16px;
 }
 
 .fundInput {
@@ -16,6 +20,9 @@
     color: white;
     font-family: "Quicksand", sans-serif;
     margin: auto;
+    padding: 8px 12px;
+    border-radius: 10px;
+    box-sizing: border-box;
 }
 
 #requestFundsContainer {
@@ -24,37 +31,46 @@
     background-color: rgba(255, 255, 255, 0.089);
     padding: 20px;
     text-align: center;
+    border-radius: 16px;
 }
 
 #fundsContainer {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 24px;
+    align-items: start;
 }
 
 #fundsContainer div {
-    font-size: 30px;
+    font-size: clamp(1.1rem, 2vw, 1.875rem);
 }
 
 #fundsContainer input {
-    font-size: 30px;
-    width: 150px;
+    font-size: clamp(1.1rem, 2vw, 1.875rem);
+    width: min(150px, 100%);
 }
 
 #requestMessage {
     font-family: "Quicksand", sans-serif;
     height: 60px;
+    width: 100%;
+    max-width: 280px;
     font-size: 20px;
     background-color: black;
     color: white;
+    margin: 0 auto 12px;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 .requestButton {
     position: relative;
     font-family: "Quicksand", sans-serif;
-    font-size: 20px;
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
     background-color: #50d95c;
-    padding: 10px;
+    padding: 10px 16px;
     border: none;
     font-weight: bold;
     margin: auto;
@@ -62,11 +78,43 @@
     cursor: pointer;
     top: 0px;
     border-radius: 20px;
+    width: 100%;
+    max-width: 240px;
 }
 
 .requestButton:hover {
     background-color: #50d95bbe;
     transition: .1s linear;
     top: -2px;
+}
+
+@media (max-width: 768px) {
+    #accountContainer {
+        padding: 0 12px;
+    }
+
+    #fundsContainer {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    #sendFundsContainer,
+    #requestFundsContainer {
+        padding: 16px;
+    }
+
+    #fundsContainer input {
+        width: 100%;
+        max-width: 220px;
+    }
+
+    #requestMessage {
+        max-width: 100%;
+        min-height: 90px;
+    }
+
+    .requestButton {
+        max-width: 100%;
+    }
 }
 
