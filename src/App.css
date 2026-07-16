@@ -8,3 +8,7 @@ html {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
+#loadingText{
+    text-align: center;
+}

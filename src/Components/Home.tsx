@@ -24,9 +24,9 @@ function Home() {
           </p>
         </div>
         <div className='homeContentContainer'>
-          <h1 className='homeTitle'>Financial Planning Tools</h1>
+          <h1 className='homeTitle'>Convenient user search</h1>
           <p className='homeParagraph'>
-            Optimize your savings with personalized budgeting tools, investment insights, and wealth management advisors. Set financial goals and monitor progress in real-time.
+            Send or request money to friends and family with a fast user search function. Login and look for the name of the person you wish to contact.
           </p>
         </div>
       </div>
@@ -77,7 +77,7 @@ function Home() {
               Get Investment help from the industry proffesionals and trained workers.<br />
               From investment help to taxes, YOU make the choices here, and We are here to help!<br />
             </p>
-            <button id='hirePro'>Hire a proffesional</button>
+            <button onClick={()=>{alert("This button does nothing, sorry")}} id='hirePro'>Hire a proffesional</button>
           </div>
           <div className='councelingImgContainer'>
             <img className='councelingImg' src='counceling.webp'></img>

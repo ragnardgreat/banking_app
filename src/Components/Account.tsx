@@ -55,6 +55,31 @@ function Account() {
 
     }, [status])
 
+    function statusCheck() {
+        fetch(`http://localhost:5000/status/${localStorage.getItem("id")}`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST"
+        })
+            .then(res => res.json())
+            .then(json => {
+                if (json.status) {
+                    alert('An error has occures')
+                    localStorage.clear()
+                    window.location.href = "/"
+                    return
+                }
+                else {
+                    setStatus(json)
+                }
+            })
+    }
+    useEffect(()=>{
+        statusCheck()
+    }, [])
+
 
     function userLogout(id: string) {
         if (data) {
@@ -91,7 +116,7 @@ function Account() {
 
     return (
         <>
-            <div id='accountContainer'>
+            {data ? <div id='accountContainer'>
                 {localStorage.getItem("id") && data ?
                     <>
                         <div id='balance'>
@@ -112,7 +137,8 @@ function Account() {
                     </div>
 
                 </div> */}
-            </div>
+            </div> : <h1 id="loadingText">Loading...</h1>}
+
         </>
     )
 }

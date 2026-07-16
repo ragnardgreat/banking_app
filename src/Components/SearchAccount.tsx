@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import type { Person } from '../Models/Person'
 import './SearchAccount.css'
+import AlertBox from './AlertBox';
 
 function SearchAccount() {
     const id = useParams().id
@@ -10,6 +11,7 @@ function SearchAccount() {
     const [sendFunds, setSendFunds] = useState<number>()
     const [message, setMessage] = useState<string>()
     const [status, setStatus] = useState<boolean>()
+    const [alertMsg, setAlertMsg] = useState<{ title: string, content: string }>()
 
 
 
@@ -62,7 +64,10 @@ function SearchAccount() {
 
     function inputCheck(value: number | undefined) {
         if (!value || isNaN(value) || value <= 0) {
-            alert("Invalid amount")
+            setAlertMsg({
+                title: "Invalid Amount",
+                content: "Please Insert Correct Amount"
+            });
             return false
         }
         return true
@@ -90,11 +95,16 @@ function SearchAccount() {
             body: JSON.stringify(payload)
         }).then(res => {
             if (res.ok) {
-                alert('Funds sent sucesfully')
-                window.location.href = "/account"
+                setAlertMsg({
+                    title: "Transfer",
+                    content: "Funds sent successfully!"
+                });
             }
             else if (res.status == 400) {
-                alert("Not enough funds")
+                setAlertMsg({
+                    title: "Funds not sent",
+                    content: "Not Enough Funds"
+                });
             }
 
         }).catch(err => console.log(err))
@@ -125,8 +135,10 @@ function SearchAccount() {
                 body: JSON.stringify(messagePayload)
             }).then(res => {
                 if (res.ok) {
-                    alert('Request Sent')
-                    window.location.href = "/account"
+                    setAlertMsg({
+                        title: "Request",
+                        content: "Funds request sent successfully!"
+                    });
                 }
             }).catch(err => console.log(err))
         }
@@ -134,23 +146,28 @@ function SearchAccount() {
     }
 
     return (<>
-        <div id="accountContainer">
-            <h1 id="balance">{data ? data.username : "No Data"}</h1>
+        {alertMsg && <AlertBox title={alertMsg.title} content={alertMsg.content} active={true} />}
+        {data ? <div id="accountContainer">
+            <h1 id="balance">{data ? data.username : "Loading..."}</h1>
             <div id="fundsContainer">
                 <div id="sendFundsContainer">
                     <label>Send Funds:</label>
-                    <p><input className='fundInput' onChange={(e) => { setFunds(parseFloat(e.target.value)) }}></input>$</p>
-                    <button className='requestButton' onClick={() => { if (inputCheck(Number(funds))) { sendTransfer() } }}>Send funds</button>
+                    <p><input className='fundInput' id="sendInput" onChange={(e) => { setFunds(parseFloat(e.target.value)); }}></input>$</p>
+                    <button className='requestButton' id="requestButton" onClick={() => { if (inputCheck(Number(funds))) { sendTransfer() }; }}>Send funds</button>
                 </div>
                 <div id="requestFundsContainer">
                     <label>Request Funds:</label>
                     <p><input className='fundInput' onChange={(e) => { setSendFunds(parseFloat(e.target.value)) }}></input>$</p>
                     <label>Message:</label>
                     <textarea id='requestMessage' onChange={(e) => { setMessage(e.target.value) }}></textarea><br />
-                    <button className='requestButton' onClick={() => { if (inputCheck(Number(sendFunds))) { requestTransfer() } }}>Request Funds</button>
+                    <button className='requestButton' onClick={() => {
+                        if (inputCheck(Number(sendFunds))) {
+                            requestTransfer()
+                        };
+                    }}>Request Funds</button>
                 </div>
             </div>
-        </div>
+        </div> : <h1 id="loadingText">Loading...</h1>}
     </>
     )
 }

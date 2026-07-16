@@ -38,7 +38,11 @@ function UserSearch() {
             {localStorage.getItem("id") ?
                 <>
                     <div id='searchContainer'>
-                        <input autoComplete='off' onChange={(e) => { setUsername(e.target.value) }} type='string' id='searchBar' name='searchBar'></input>
+                        <input autoComplete='off' onChange={(e) => { setUsername(e.target.value) }} onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                userSearch()
+                            }
+                        }} type='string' id='searchBar' name='searchBar'></input>
                         <button id='searchButton' onClick={() => { userSearch() }}>Search</button>
                     </div>
                     <div id='resultsContainer'>
