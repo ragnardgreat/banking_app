@@ -129,3 +129,46 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+@media (max-width: 768px) {
+    #homeContainer {
+        width: 100%;
+        padding: 0 12px 30px;
+        box-sizing: border-box;
+    }
+
+    #homeImg {
+        height: 260px;
+    }
+
+    #homeImgContainer {
+        width: 100%;
+    }
+
+    #homeImgTxt {
+        top: 58px;
+        font-size: 1.2rem;
+        padding: 20px 0px 20px 0px;
+        align-items: center;
+        margin: auto;
+        text-align: center;
+    }
+
+    #homeFeaturesContainer,
+    .councelingItem {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+    }
+
+    .homeParagraph {
+        font-size: 1.3rem;
+    }
+
+    .councelingItem {
+        gap: 14px;
+    }
+
+    #hirePro {
+        width: 100%;
+    }
+}

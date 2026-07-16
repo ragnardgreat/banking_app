@@ -114,3 +114,41 @@
     transition: .1s linear;
     top: -2px;
 }
+
+@media (max-width: 768px) {
+    #searchContainer {
+        width: 100%;
+        margin-top: 40px;
+        padding: 0 12px;
+        box-sizing: border-box;
+        white-space: normal;
+    }
+
+    #searchBar {
+        width: 70%;
+        box-sizing: border-box;
+    }
+
+    #searchButton {
+        width: 30%;
+    }
+
+    #resultsContainer {
+        grid-template-columns: 1fr;
+    }
+
+    .searchResult {
+        flex-direction: column;
+        gap: 12px;
+        width: 80%;
+    }
+
+    .searchName {
+        font-size: 1.4rem;
+    }
+
+    #noUsersMsg {
+        font-size: 1.4rem;
+        grid-column: 1;
+    }
+}

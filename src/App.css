@@ -9,6 +9,17 @@ html {
     scrollbar-width: none;
 }
 
-#loadingText{
+#loadingText {
     text-align: center;
+}
+
+@media (max-width: 768px) {
+    body,
+    html {
+        font-size: 15px;
+    }
+
+    #loadingText {
+        padding: 0 12px;
+    }
 }
