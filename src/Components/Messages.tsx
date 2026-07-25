@@ -4,6 +4,26 @@ import AlertBox from './AlertBox';
 import './Messages.css'
 import { apiUrl } from '../config'
 
+function parseJsonResponse(response: Response) {
+    const contentType = response.headers.get('content-type') || '';
+
+    if (response.status === 204 || response.status === 205 || !contentType.includes('application/json')) {
+        return Promise.resolve(null);
+    }
+
+    return response.text().then(text => {
+        if (!text) {
+            return null;
+        }
+
+        try {
+            return JSON.parse(text);
+        } catch {
+            return null;
+        }
+    });
+}
+
 function Messages() {
 
     const [data, setData] = useState<Message[]>()
@@ -18,8 +38,8 @@ function Messages() {
             },
             method: "POST",
             body: JSON.stringify(localStorage.getItem("token"))
-        }).then(res => res.json())
-            .then(json => setData(json))
+        }).then(parseJsonResponse)
+            .then(json => setData(Array.isArray(json) ? json : []))
             .catch(err => console.error(err))
     }, [])
 
@@ -31,16 +51,16 @@ function Messages() {
             },
             method: "POST"
         })
-            .then(res => res.json())
+            .then(parseJsonResponse)
             .then(json => {
-                if (json.status) {
+                if (json?.status) {
                     alert('An error has occures')
                     localStorage.clear()
                     window.location.href = "/account"
                     return
                 }
                 else {
-                    setStatus(json)
+                    setStatus(Boolean(json))
                 }
             })
     }
@@ -49,7 +69,7 @@ function Messages() {
         statusCheck()
     }, [])
 
-    function sendMoney(sender: number, reciever: number, amount: number) {
+    function sendMoney(sender: number, reciever: number, amount: number, id: number) {
         const payload = {
             from: sender,
             to: reciever,
@@ -64,15 +84,23 @@ function Messages() {
                 method: "POST",
                 body: JSON.stringify(payload)
             }).then(res => {
+                console.log(res)
                 if (res.ok) {
                     setAlertMsg({
                         title: "Transfer Succesful",
                         content: "Funds have been succesfully sent!"
                     });
+
+                    confirmMessage(id)
                 }
-                return res.json()
+
+                return parseJsonResponse(res);
             }).then(json => {
                 console.log(json)
+                if (!json?.message) {
+                    return;
+                }
+
                 if (json.message.includes("409 CONFLICT")) {
                     setAlertMsg({
                         title: "Transfer Failed",
@@ -92,22 +120,25 @@ function Messages() {
 
     function declineReqeust(id: number) {
         if (status) {
-            fetch(`${apiUrl}/message/confirm`, {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                method: "POST",
-                body: JSON.stringify(id)
-            }).then(() => {
-                setAlertMsg({
-                    title: "Declined",
-                    content: "Message has been declined"
-                });
-            }
-            )
+            confirmMessage(id)
         }
+    }
 
+    function confirmMessage(id: number) {
+        fetch(`${apiUrl}/message/confirm`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: JSON.stringify(id)
+        }).then(() => {
+            setAlertMsg({
+                title: "Declined",
+                content: "Message has been declined"
+            });
+        }
+        )
     }
 
     function showMessages() {
@@ -123,7 +154,7 @@ function Messages() {
                                     <div className="messageMessage">Message:<br />{message.message}</div>
                                 </div>
                                 <div className='messageButtonsContainer'>
-                                    <button className='acceptMessage messageButton' onClick={(e) => { sendMoney(message.senderId, message.receiverId, message.amount); e.currentTarget.disabled = true; }}>Accept</button>
+                                    <button className='acceptMessage messageButton' onClick={(e) => { sendMoney(message.senderId, message.receiverId, message.amount, message.id); e.currentTarget.disabled = true; }}>Accept</button>
                                     <button className='declineMessage messageButton' onClick={(e) => { declineReqeust(message.id); e.currentTarget.disabled = true; }}>Decline</button>
                                 </div>
                             </div>
