@@ -3,6 +3,7 @@ import { useParams } from 'react-router'
 import type { Person } from '../Models/Person'
 import './SearchAccount.css'
 import AlertBox from './AlertBox';
+import { apiUrl } from '../config'
 
 function SearchAccount() {
     const id = useParams().id
@@ -18,7 +19,7 @@ function SearchAccount() {
 
     useEffect(() => {
         if (localStorage.getItem("id") != null) {
-            fetch(`http://localhost:5000/search/found/${id}`).then(res => res.json()).then(json => {
+            fetch(`${apiUrl}/search/found/${id}`).then(res => res.json()).then(json => {
                 if (json.message == "No value present") {
                     alert("No such user exists")
                     window.location.href = "/search"
@@ -37,7 +38,7 @@ function SearchAccount() {
     //Check user login status
 
     function statusCheck() {
-        fetch(`http://localhost:5000/status/${localStorage.getItem("id")}`, {
+        fetch(`${apiUrl}/status/${localStorage.getItem("id")}`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -86,7 +87,7 @@ function SearchAccount() {
             amount: funds!
         }
 
-        fetch("http://localhost:5000/transfer", {
+        fetch(`${apiUrl}/transfer`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -96,17 +97,26 @@ function SearchAccount() {
         }).then(res => {
             if (res.ok) {
                 setAlertMsg({
-                    title: "Transfer",
-                    content: "Funds sent successfully!"
+                    title: "Transfer Succesful",
+                    content: "Funds have been succesfully sent!"
                 });
             }
-            else if (res.status == 400) {
+            return res.json()
+        }
+        ).then(json => {
+            console.log(json)
+            if (json.message.includes("409 CONFLICT")) {
                 setAlertMsg({
-                    title: "Funds not sent",
-                    content: "Not Enough Funds"
+                    title: "Transfer Failed",
+                    content: "Can't go over transfer limit"
                 });
             }
-
+            if (json.message.includes("400 BAD_REQUEST")) {
+                setAlertMsg({
+                    title: "Transfer Failed",
+                    content: "Not enough money"
+                });
+            }
         }).catch(err => console.log(err))
 
 
@@ -126,7 +136,7 @@ function SearchAccount() {
         }
 
         if (status) {
-            fetch("http://localhost:5000/message/request", {
+            fetch(`${apiUrl}/message/request`, {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -158,7 +168,7 @@ function SearchAccount() {
                 <div id="requestFundsContainer">
                     <label>Request Funds:</label>
                     <p><input className='fundInput' onChange={(e) => { setSendFunds(parseFloat(e.target.value)) }}></input>$</p>
-                    <label>Message:</label><br/>
+                    <label>Message:</label><br />
                     <textarea id='requestMessage' onChange={(e) => { setMessage(e.target.value) }}></textarea><br />
                     <button className='requestButton' onClick={() => {
                         if (inputCheck(Number(sendFunds))) {

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './Register.css'
 import AlertBox from './AlertBox';
+import { apiUrl } from '../config'
 
 function Register() {
     const [email, setEmail] = useState<string>('')
@@ -60,7 +61,7 @@ function Register() {
             return
         }
 
-        fetch(`http://localhost:5000/newuser`, {
+        fetch(`${apiUrl}/newuser`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router'
 import type { SearchResult } from '../Models/SearchResult'
 import "./UserSearch.css"
+import { apiUrl } from '../config'
 
 function UserSearch() {
 
@@ -10,7 +11,7 @@ function UserSearch() {
 
 
     function userSearch() {
-        fetch(`http://localhost:5000/search/${username}`)
+        fetch(`${apiUrl}/search/${username}`)
             .then(res => res.json())
             .then(json => setData(json))
     }

@@ -7,6 +7,7 @@ import Register from './Components/Register'
 import UserSearch from './Components/UserSearch'
 import SearchAccount from './Components/SearchAccount'
 import Messages from './Components/Messages'
+import { apiUrl } from './config'
 import "./App.css"
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
         }
         else {
             localStorage.clear()
-            fetch(`http://localhost:5000/logout/${currentId}`, {
+            fetch(`${apiUrl}/logout/${currentId}`, {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'

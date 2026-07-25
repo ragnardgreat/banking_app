@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import "./Login.css"
 import AlertBox from './AlertBox'
+import { apiUrl } from '../config'
 
 function Login() {
 
@@ -13,7 +14,7 @@ function Login() {
   }
 
   function login() {
-    fetch(`http://localhost:5000/login/${username}`, {
+    fetch(`${apiUrl}/login/${username}`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

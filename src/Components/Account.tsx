@@ -1,11 +1,18 @@
 import { useEffect, useState } from 'react'
 import type { Person } from '../Models/Person'
 import "./Account.css"
+import AlertBox from './AlertBox'
+import { apiUrl } from '../config'
 
 function Account() {
     const [data, setData] = useState<Person>()
     const [status, setStatus] = useState<boolean>()
-    // const [addAmount, setAddAmount] = useState<number | undefined>()
+    const [addAmount, setAddAmount] = useState<number | undefined>()
+    const [alertMsg, setAlertMsg] = useState<{ title: string, content: string }>()
+
+    function isValidAmount(value: number | undefined) {
+        return typeof value === 'number' && Number.isFinite(value) && value >= 0
+    }
 
     useEffect(() => {
         //Resets page when logging out and going back
@@ -23,7 +30,7 @@ function Account() {
         if (localStorage.getItem("id") == null) {
             return
         }
-        fetch(`http://localhost:5000/status/${localStorage.getItem("id")}`, {
+        fetch(`${apiUrl}/status/${localStorage.getItem("id")}`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -46,7 +53,7 @@ function Account() {
                 if (status) {
                     //I know this isn't safe, but this is for demonstrative purposes only
                     if (localStorage.getItem("id") != null) {
-                        fetch(`http://localhost:5000/account/${localStorage.getItem("id")}?token=${localStorage.getItem("token")}`)
+                        fetch(`${apiUrl}/account/${localStorage.getItem("id")}?token=${localStorage.getItem("token")}`)
                             .then(res => res.json())
                             .then(json => setData(json))
                     }
@@ -56,7 +63,7 @@ function Account() {
     }, [status])
 
     function statusCheck() {
-        fetch(`http://localhost:5000/status/${localStorage.getItem("id")}`, {
+        fetch(`${apiUrl}/status/${localStorage.getItem("id")}`, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -76,14 +83,14 @@ function Account() {
                 }
             })
     }
-    useEffect(()=>{
+    useEffect(() => {
         statusCheck()
     }, [])
 
 
     function userLogout(id: string) {
         if (data) {
-            fetch(`http://localhost:5000/logout/${id}?token=${localStorage.getItem("token")}`, {
+            fetch(`${apiUrl}/logout/${id}?token=${localStorage.getItem("token")}`, {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -96,34 +103,56 @@ function Account() {
         }
     }
 
-    // function addFunds() {
-    //     const payload = {
-    //         id: localStorage.getItem("id"),
-    //         amount: addAmount
-    //     }
+    function addFunds() {
+        if (!isValidAmount(addAmount)) {
+            alert('Please enter a valid non-negative amount')
+            return
+        }
 
-    //     fetch(`http://localhost:5000/addfunds`, {
-    //         headers: {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json'
-    //         },
-    //         method: "POST",
-    //         body: (JSON.stringify(payload))
-    //     }).then(() => { alert('Funds added sucsfully'); window.location.reload() })
-    //         .catch(err => console.log(err))
-    // }
+        const payload = {
+            id: localStorage.getItem("id"),
+            amount: addAmount,
+            token: localStorage.getItem("token")
+        }
+
+        fetch(`${apiUrl}/addfunds`, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: "POST",
+            body: (JSON.stringify(payload))
+        }).then(() => {
+            setAlertMsg({
+                title: "Transfer Succesful",
+                content: "Funds have been succesfully sent!"
+            });
+        })
+            .catch(err => console.log(err))
+    }
 
 
     return (
         <>
+            {alertMsg && <AlertBox title={alertMsg.title} content={alertMsg.content} active={true} />}
             {data ? <div id='accountContainer'>
                 {localStorage.getItem("id") && data ?
                     <>
                         <div id='balance'>
                             {/*For debugging and shocase purposes */}
-
-                            {/* <input id='addFunds' onChange={(e) => { setAddAmount(Number(e.target.value)) }}></input>
-                            <button onClick={() => { addFunds() }}>Add Funds</button><br />" */}
+                            <label id='addFundsLabel' htmlFor="addFunds">(This is here for fun/testing, add as much as you want)</label><br />
+                            <input
+                                id='addFunds'
+                                name="addFunds"
+                                type="number"
+                                min="0"
+                                value={addAmount ?? ''}
+                                onChange={(e) => {
+                                    const parsedValue = Number(e.target.value)
+                                    setAddAmount(e.target.value === '' ? undefined : parsedValue)
+                                }}
+                            ></input>
+                            <button id='addFundsButton' onClick={() => { addFunds() }}>Add Funds</button><br />
                             {data ? data.username : "No Data"}<br />
                             Balance: {data ? " $" + data.balance : "No Data"}<br />
                             {data ? <button id='logOut' onClick={() => { userLogout(data.id) }}>Log out</button> : "No Data"}<br />
