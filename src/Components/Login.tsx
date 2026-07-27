@@ -41,6 +41,7 @@ function Login() {
   return (<>
     {alertMsg && <AlertBox title={alertMsg.title} content={alertMsg.content} active={false} />}
     <div id='loginContainer'>
+      <p>(It could take up to a minute to respond)</p>
       <h1 id="loginText">Login</h1>
       <label htmlFor='username'>Username:</label>
       <input autoComplete="off" onChange={(e) => { setUsername(e.target.value) }} name='username' id='username'></input><br />

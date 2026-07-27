@@ -91,6 +91,7 @@ function Register() {
     return (<>
         {alertMsg && <AlertBox title={alertMsg.title} content={alertMsg.content} active={true} />}
         <div id="registerContainer">
+            <p>(It could take up to a minute to respond)</p>
             <h1 id='registerText'>Register</h1>
             {errorMessage && <p id='registerError'>{errorMessage}</p>}
             <label htmlFor='username'>Username:</label>
