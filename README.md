@@ -34,6 +34,6 @@ Misc: Docker
 LinkedIn: www.linkedin.com/in/roland-piperal-932a4a347
 
 # Info
-This project is in no way related or affiliated with any oficcial Payday 2, Starbreeze or Overkill media/games.
+This project is in no way related or affiliated with any official Payday 2, Starbreeze or Overkill media/games.
 
 This is a fan project with a purpose to learn and improve.
